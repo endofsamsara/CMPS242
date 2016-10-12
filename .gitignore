@@ -1,3 +1,7 @@
+#IDE
+.idea/
+*.iml
+
 #raw data
 data/*.json
 
