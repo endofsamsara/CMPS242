@@ -119,6 +119,14 @@ def get_row(line_contents, column_names):
             row.append('')
     return row
 
+
+def get_review_rating(json_file, limit=None):
+    review_csv_file = '{0}_review.csv'.format(json_file.split('.json')[0])
+    rating_csv_file = '{0}_rating.csv'.format(json_file.split('.json')[0])
+    reviews = get_review_rating_from_file(json_file, limit)
+    write_file(reviews, review_csv_file, rating_csv_file)
+
+
 if __name__ == '__main__':
     """Convert a yelp dataset file from json to csv."""
 
@@ -144,9 +152,6 @@ if __name__ == '__main__':
 
     json_file = args.json_file
     limit = args.limit
-    review_csv_file = '{0}_review.csv'.format(json_file.split('.json')[0])
-    rating_csv_file = '{0}_rating.csv'.format(json_file.split('.json')[0])
+    get_review_rating(json_file, limit)
 
-    reviews = get_review_rating_from_file(json_file, limit)
-    write_file(reviews, review_csv_file, rating_csv_file)
     # read_and_write_file(json_file, csv_file, column_names)

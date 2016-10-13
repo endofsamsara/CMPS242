@@ -1,27 +1,27 @@
+import codecs
+
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer
 
 
 class PreProcessing:
-    def __init__(self):
-        pass
-
-    _in_file_name, _out_file_name = "in.csv", "out.csv"
-
-    _partial_list = {
-        "n't": "not",
-        "'m": "am",
-        "'s": "is",
-        "'re": "are",
-        "'ll": "will",
-        "'ve": "have",
-        "ca": "can",
-        "wo": "will"
-    }
+    def __init__(self, input_name="in.csv", output_name=None):
+        self._in_file_name = input_name
+        self._out_file_name = output_name if output_name else input_name[:-4]+"_processed"+input_name[-4:]
+        self._partial_list = {
+            "n't": "not",
+            "'m": "am",
+            "'s": "is",
+            "'re": "are",
+            "'ll": "will",
+            "'ve": "have",
+            "ca": "can",
+            "wo": "will"
+        }
 
     # run the whole process of pre processing
     def pre_processing(self):
-        with open(self._in_file_name, "r") as raw, open(self._out_file_name, "w") as out:
+        with codecs.open(self._in_file_name, "r", "utf-8") as raw, codecs.open(self._out_file_name, "w", "utf-8") as out:
             for line in raw:
                 line = line.strip()
                 var = self.tokenize(line)
