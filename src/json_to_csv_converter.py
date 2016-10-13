@@ -113,7 +113,7 @@ def get_row(line_contents, column_names):
             row.append('{0}'.format(line_value.encode('utf-8')))
         elif line_value is not None:
             if column_name == 'stars':
-                line_value *= 0.2
+                line_value = (line_value - 1)* 0.25
             row.append('{0}'.format(line_value))
         else:
             row.append('')
