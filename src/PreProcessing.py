@@ -5,7 +5,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 
 
 class PreProcessing:
-    def __init__(self, input_name="in.csv", output_name=None):
+    def __init__(self, input_name="in.txt", output_name=None):
         self._in_file_name = input_name
         self._out_file_name = output_name if output_name else input_name[:-4]+"_processed"+input_name[-4:]
         self._partial_list = {

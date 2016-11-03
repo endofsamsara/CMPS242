@@ -3,6 +3,7 @@
 For more information on the Yelp Dataset Challenge please visit http://yelp.com/dataset_challenge
 """
 import argparse
+import codecs
 import collections
 import csv
 import simplejson as json
@@ -47,11 +48,8 @@ def write_file(reviews, reviews_csv_file_path, ratings_csv_file_path):
     """Read in the json dataset file and write it out to a csv file, given the column names."""
     with open(reviews_csv_file_path, 'wb+') as reviews_out:
         with open(ratings_csv_file_path, 'wb+') as ratings_out:
-            reviews_csv_file = csv.writer(reviews_out)
-            ratings_csv_file = csv.writer(ratings_out)
-            for review in reviews:
-                reviews_csv_file.writerow(get_row(review, ['text']))
-                ratings_csv_file.writerow(get_row(review, ['stars']))
+            reviews_out.writelines([get_row(review, ['text'])[0]+'\n' for review in reviews])
+            ratings_out.writelines([get_row(review, ['stars'])[0]+'\n' for review in reviews])
 
 
 def get_column_names(line_contents, parent_key=''):
@@ -117,12 +115,13 @@ def get_row(line_contents, column_names):
             row.append('{0}'.format(line_value))
         else:
             row.append('')
+    row = [s.replace('\n', '') for s in row]
     return row
 
 
 def get_review_rating(json_file, limit=None):
-    review_csv_file = '{0}_review.csv'.format(json_file.split('.json')[0])
-    rating_csv_file = '{0}_rating.csv'.format(json_file.split('.json')[0])
+    review_csv_file = '{0}_review.txt'.format(json_file.split('.json')[0])
+    rating_csv_file = '{0}_rating.txt'.format(json_file.split('.json')[0])
     reviews = get_review_rating_from_file(json_file, limit)
     write_file(reviews, review_csv_file, rating_csv_file)
 
