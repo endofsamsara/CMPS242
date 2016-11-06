@@ -115,7 +115,7 @@ def get_row(line_contents, column_names):
             row.append('{0}'.format(line_value))
         else:
             row.append('')
-    row = [s.replace('\n', '') for s in row]
+    row = [s.replace('\n', '').replace('\r', '') for s in row]
     return row
 
 

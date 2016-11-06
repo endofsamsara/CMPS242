@@ -15,6 +15,7 @@ class PreProcessing:
             "'re": "are",
             "'ll": "will",
             "'ve": "have",
+            "'d": "will",
             "ca": "can",
             "wo": "will"
         }
