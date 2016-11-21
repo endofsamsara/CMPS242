@@ -25,8 +25,8 @@ from SVR import SVR
 #         out.write_row(rating, vector)
 X, y = datasets.load_svmlight_file('../data/train_vectors.txt')
 model = SVR()
-model.fit(X[:900],y[:900])
-yp = model.predict(X[900:])
-rmse = model.jduge(yp,y[900:])
-print yp,y[900:]
+model.fit(X[:90],y[:90])
+yp = model.predict(X[90:])
+rmse = model.jduge(yp,y[90:])
+print yp,y[90:]
 print rmse
