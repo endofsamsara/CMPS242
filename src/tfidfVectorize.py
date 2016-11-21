@@ -9,7 +9,9 @@ class tfidfVectorizer:
     def tfidf_vectorize(self):
         #this funtion turn target txt.file to a sparse matrix res in csr format
         with codecs.open(self._in_file_name, "r", "utf-8") as raw:
+            var = self.fit(raw)
             res = self.spa(var)
+        return res
 
     def fit(self, file):
         vectorized = TfidfVectorizer()
@@ -21,3 +23,5 @@ class tfidfVectorizer:
         print(sparse.csr_matrix(vec))
         return [sparse.csr_matrix(vec)]
 
+x = tfidfVectorizer('.../data/yelp_academic_dataset_review_processed.txt').tfidf_vectorize
+print x
