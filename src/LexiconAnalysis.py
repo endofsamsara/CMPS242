@@ -38,6 +38,7 @@ class LexiconAnalysis:
 
                     #make sure starts from index 6
                     items[2] = items[2][6:]
+                    items[2] = wnl.lemmatize(items[2])
                     if items[0] == "type=strongsubj":
                         if items[5] == "priorpolarity=positive":
                             self.mqs[items[2]] = 1.0
@@ -81,7 +82,7 @@ class LexiconAnalysis:
             # strong negative words proportion (<-1)
             features += [sum(scores < -1) / total]
             # avg score among those with a score
-            features += [sum(scores) / (pc + nc)]
+            features += [0] if pc + nc == 0 else [sum(scores) / (pc + nc)]
             # proportion of position sentences (that have positive total score)
             sscores = np.array([np.sum(scores[sentences[x]:sentences[x + 1]]) for x in range(len(sentences) - 1)])
             stotal = float(sscores.size)
@@ -109,7 +110,7 @@ class LexiconAnalysis:
             # strong negative words proportion (<-1)
             features += [sum(scores == -1.0) / total]
             # avg score among those with a score
-            features += [sum(scores) / (pc + nc)]
+            features += [0] if pc + nc == 0 else [sum(scores) / (pc + nc)]
             # proportion of position sentences (that have positive total score)
             sscores = np.array([np.sum(scores[sentences[x]:sentences[x + 1]]) for x in range(len(sentences) - 1)])
             stotal = float(sscores.size)

@@ -22,6 +22,3 @@ class tfidfVectorizer:
     def spa(self, vec):
         print(sparse.csr_matrix(vec))
         return [sparse.csr_matrix(vec)]
-
-x = tfidfVectorizer('.../data/yelp_academic_dataset_review_processed.txt').tfidf_vectorize
-print x
