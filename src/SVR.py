@@ -17,33 +17,14 @@ class SVR:
     def _error(self, k):
         pk = self.alpha * self.K[:, k] + self.b
         diff = pk - self.y[k]
-        e = max(0, abs(diff) - self.epsilon)
         return diff
 
-    def _selectj(self, alpha_i, error_i):
-        self.valid[alpha_i] = 1
-        candidateAlphaList = np.nonzero(self.valid)[0]
-        maxStep = 0
-        alpha_j = 0
-        error_j = 0
+    def _selectj(self, alpha_i):
 
-        # find the alpha with max iterative step
-        # if len(candidateAlphaList) > 1:
-        if 0:
-            for alpha_k in candidateAlphaList:
-                if alpha_k == alpha_i:
-                    continue
-                error_k = self._error(alpha_k)
-                if abs(error_k - error_i) > maxStep:
-                    maxStep = abs(error_k - error_i)
-                    alpha_j = alpha_k
-                    error_j = error_k
-        # if came in this loop first time, we select alpha j randomly
-        else:
-            alpha_j = alpha_i
-            while alpha_j == alpha_i:
-                alpha_j = int(np.random.uniform(0, self.trainSize))
-            error_j = self._error(alpha_j)
+        alpha_j = alpha_i
+        while alpha_j == alpha_i:
+            alpha_j = int(np.random.uniform(0, self.trainSize))
+        error_j = self._error(alpha_j)
 
         return alpha_j, error_j
 
@@ -62,7 +43,7 @@ class SVR:
         if (abs(error_i) - self.epsilon < -0.001) and (self.alpha[i] != 0) or (
                         abs(error_i) - self.epsilon > 0.001) and (-self.C < self.alpha[i] < self.C):
 
-            j, error_j = self._selectj(i, error_i)
+            j, error_j = self._selectj(i)
             j_old = self.alpha[j]
 
             eta = -2 * self.K[i, j] + 2
@@ -165,25 +146,13 @@ class SVR:
         entireSet = True
         alphaPairsChanged = 1
         iterCount = 0
-        # while (iterCount < maxIter) and ((alphaPairsChanged > 0) or entireSet):
         while iterCount < maxIter and alphaPairsChanged > 0 :
             alphaPairsChanged = 0
 
-            if entireSet:
-                for i in xrange(self.trainSize):
-                    alphaPairsChanged += self._smo(i)
-                print '---iter:{:d} entire set, alpha pairs changed:{:d}'.format(iterCount, alphaPairsChanged)
-                iterCount += 1
-            else:
-                nonBoundAlphasList = np.nonzero((self.alpha > 0) * (self.alpha < self.C))[0]
-                for i in nonBoundAlphasList:
-                    alphaPairsChanged += self._smo(i)
-                print '---iter:{:d} non boundary, alpha pairs changed:{:d}'.format(iterCount, alphaPairsChanged)
-                iterCount += 1
-            # if entireSet:
-            #     entireSet = False
-            # elif alphaPairsChanged == 0:
-            #     entireSet = True
+            for i in xrange(self.trainSize):
+                alphaPairsChanged += self._smo(i)
+            print '---iter:{:d} entire set, alpha pairs changed:{:d}'.format(iterCount, alphaPairsChanged)
+            iterCount += 1
 
     def predict(self, X):
         nzind = np.nonzero(self.alpha)[0]
