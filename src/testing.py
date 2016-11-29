@@ -8,7 +8,7 @@ from SVR import SVR
 
 
 def cal(X):
-    return X[0]+2*X[1]+3*X[2]
+    return 0.01*(X[0]+2*X[1]+3*X[2])
 
 X1=[1,2,3,7,3,2,1,10,8,3,1,2,1,3,1,2,1]
 X2=[0,3,4,1,14,19,0,1,2,4,3,0,2,4,0,4,3]
@@ -19,6 +19,7 @@ X = csr_matrix(X)
 y=[]
 for i in zip(X1,X2,X3):
     y.append(cal(i))
+
 
 print y
 print X
